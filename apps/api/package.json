@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "@fastify/cors": "^11.0.1",
+    "@prisma/client": "6.11.1",
     "@sass/auth": "workspace:*",
     "fastify": "^5.4.0",
     "fastify-type-provider-zod": "^5.0.2",
@@ -16,6 +17,7 @@
     "@sass/prettier": "workspace:*",
     "@sass/typescript-config": "workspace:*",
     "@types/node": "^24.0.13",
+    "prisma": "^6.11.1",
     "tsx": "^4.20.3"
   },
   "eslintConfig": {
