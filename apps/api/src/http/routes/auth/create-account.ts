@@ -12,6 +12,9 @@ export async function createAccount(app: FastifyInstance) {
     '/users',
     {
       schema: {
+        summary: 'Create a new user account',
+        description: 'This endpoint allows you to create a new user account.',
+        tags: ['Auth'],
         body: z.object({
           name: z.string().min(2, 'Name is required'),
           email: z.string().email('Invalid email address'),
