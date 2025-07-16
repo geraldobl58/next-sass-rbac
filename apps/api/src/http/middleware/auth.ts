@@ -1,4 +1,4 @@
-import fastify, { FastifyInstance } from 'fastify'
+import { FastifyInstance } from 'fastify'
 import { UnauthorizedError } from '../routes/_errors/unauthorized-error'
 
 import { fastifyPlugin } from 'fastify-plugin'
