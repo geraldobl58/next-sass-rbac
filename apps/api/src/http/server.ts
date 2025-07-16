@@ -11,12 +11,15 @@ import {
   ZodTypeProvider,
 } from 'fastify-type-provider-zod'
 
+import { env } from '@sass/env'
+
 import { createAccount } from './routes/auth/create-account'
 import { authenticateWithPassword } from './routes/auth/authenticate-with-password'
 import { getProfile } from './routes/auth/get-profile'
 import { errorHandler } from './error-handler'
 import { requestPasswordRecover } from './routes/auth/request-password-recover'
 import { resetPassword } from './routes/auth/reset-password'
+import { authenticateWithGithub } from './routes/auth/authenticate-with-github'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -32,7 +35,15 @@ app.register(fastifySwagger, {
       description: 'Full-stack SaaS with multi-tenant & RBAC.',
       version: '1.0.0',
     },
-    servers: [],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 })
@@ -42,7 +53,7 @@ app.register(fastifySwaggerUI, {
 })
 
 app.register(fastifyJwt, {
-  secret: 'my-secret-key', // Replace with your actual secret key
+  secret: env.JWT_SECRET,
 })
 
 app.register(fastifyCors)
@@ -52,7 +63,9 @@ app.register(authenticateWithPassword)
 app.register(getProfile)
 app.register(requestPasswordRecover)
 app.register(resetPassword)
+app.register(authenticateWithGithub)
 
-app.listen({ port: 3333 }).then(() => {
+// Make sure you have a PORT variable in your environment
+app.listen({ port: Number(env.SERVER_PORT) || 3333 }).then(() => {
   console.log(`HTTP server running!`)
 })

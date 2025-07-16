@@ -18,6 +18,11 @@ export async function getProfile(app: FastifyInstance) {
           summary: 'Get authenticate user profile',
           description: 'Retrieve the profile of the authenticated user.',
           tags: ['Auth'],
+          security: [
+            {
+              bearerAuth: [],
+            },
+          ],
           response: {
             200: z.object({
               user: z.object({

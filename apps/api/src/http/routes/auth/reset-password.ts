@@ -14,7 +14,7 @@ export async function resetPassword(app: FastifyInstance) {
     '/password/reset',
     {
       schema: {
-        summary: 'Get authenticate user profile',
+        summary: 'Reset user password',
         description: 'Retrieve the profile of the authenticated user.',
         tags: ['Auth'],
         body: z.object({
