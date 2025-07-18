@@ -10,7 +10,7 @@ import { getUserPermissions } from '../../../utils/get-user-permissions'
 import { UnauthorizedError } from '../_errors/unauthorized-error'
 import { createSlug } from '../../../utils/create-slug'
 
-export async function creatProject(app: FastifyInstance) {
+export async function createProject(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
