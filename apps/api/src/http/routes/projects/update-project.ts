@@ -1,0 +1,87 @@
+import { FastifyInstance } from 'fastify'
+
+import { ZodTypeProvider } from 'fastify-type-provider-zod'
+
+import { z } from 'zod'
+
+import { projectSchema } from '@sass/auth'
+
+import { auth } from '../../middleware/auth'
+import { prisma } from '../../../lib/prisma'
+import { getUserPermissions } from '../../../utils/get-user-permissions'
+import { UnauthorizedError } from '../_errors/unauthorized-error'
+import { BadRequestError } from '../_errors/bad-request-error'
+
+export async function updateProject(app: FastifyInstance) {
+  app
+    .withTypeProvider<ZodTypeProvider>()
+    .register(auth)
+    .put(
+      '/organizations/:slug/projects/:projectId',
+      {
+        schema: {
+          tags: ['Projects'],
+          summary: 'Update Project',
+          description:
+            'Update an existing project. The user must be authenticated.',
+          security: [
+            {
+              bearerAuth: [],
+            },
+          ],
+          params: z.object({
+            slug: z.string().min(1, 'Organization slug is required'),
+            projectId: z.string().min(1, 'Project ID is required'),
+          }),
+          body: z.object({
+            name: z.string().min(1, 'Project name is required'),
+            description: z.string(),
+          }),
+          response: {
+            204: z.null(),
+          },
+        },
+      },
+      async (request, reply) => {
+        const { slug, projectId } = request.params
+        const userId = await request.getCurrentUseId()
+        const { organization, membership } =
+          await request.getUserMembership(slug)
+
+        const project = await prisma.project.findUnique({
+          where: {
+            id: projectId,
+            organizationId: organization.id,
+          },
+        })
+
+        if (!project) {
+          throw new BadRequestError('Project not found in this organization.')
+        }
+
+        const { cannot } = getUserPermissions(userId, membership.role)
+
+        const authProject = projectSchema.parse(project)
+
+        if (cannot('update', authProject)) {
+          throw new UnauthorizedError(
+            'You do not have permission to update this project in this organization.'
+          )
+        }
+
+        const { name, description } = request.body
+
+        await prisma.project.update({
+          where: {
+            id: projectId,
+          },
+          data: {
+            name,
+            description,
+          },
+        })
+
+        return reply.status(204).send()
+      }
+    )
+}
