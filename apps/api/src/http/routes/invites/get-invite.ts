@@ -6,10 +6,7 @@ import { z } from 'zod'
 
 import { rolesSchema } from '@sass/auth'
 
-import { auth } from '../../middleware/auth'
 import { prisma } from '../../../lib/prisma'
-import { getUserPermissions } from '../../../utils/get-user-permissions'
-import { UnauthorizedError } from '../_errors/unauthorized-error'
 import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function getInvite(app: FastifyInstance) {
