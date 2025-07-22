@@ -1,13 +1,11 @@
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@radix-ui/react-label'
+import { auth } from '@/auth/auth'
 
-export default function Home() {
+export default async function Home() {
+  const { user } = await auth()
+
   return (
     <div>
-      <Label>Home</Label>
-      <Button>Home</Button>
-      <Input placeholder="Type something..." className="mt-2" />
+      <pre>{JSON.stringify(user, null, 2)}</pre>
     </div>
   )
 }
