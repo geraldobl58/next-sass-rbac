@@ -6,19 +6,18 @@ import { AlertTriangle, GithubIcon, Loader2 } from 'lucide-react'
 
 import { useFormState } from '@/hooks/use-form-state'
 
-import { signInWithEmailAndPassword } from './actions'
-
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+
+import { signUpAction } from './actions'
 import { signInWithGithub } from '../actions'
 
-export function SignInForm() {
-  const [{ success, message, errors }, handleSubmit, isPending] = useFormState(
-    signInWithEmailAndPassword
-  )
+export function SignUpForm() {
+  const [{ success, message, errors }, handleSubmit, isPending] =
+    useFormState(signUpAction)
 
   return (
     <div className="space-y-4">
@@ -32,6 +31,16 @@ export function SignInForm() {
             </AlertDescription>
           </Alert>
         )}
+        <div className="space-y-2">
+          <Label htmlFor="name">Name</Label>
+          <Input name="name" type="text" id="name" />
+
+          {errors?.name && (
+            <p className="text-xs font-medium text-red-500 dark:text-red-400">
+              {errors.name[0]}
+            </p>
+          )}
+        </div>
 
         <div className="space-y-2">
           <Label htmlFor="email">E-mail</Label>
@@ -53,32 +62,39 @@ export function SignInForm() {
               {errors.password[0]}
             </p>
           )}
+        </div>
 
-          <Link
-            href="/auth/forgot-password"
-            className="text-foreground text-sm font-medium hover:underline"
-          >
-            Forgot password?
-          </Link>
+        <div className="space-y-2">
+          <Label htmlFor="password_confirmation">Confirm password</Label>
+          <Input
+            name="password_confirmation"
+            type="password"
+            id="password_confirmation"
+          />
+
+          {errors?.password_confirmation && (
+            <p className="text-xs font-medium text-red-500 dark:text-red-400">
+              {errors.password_confirmation[0]}
+            </p>
+          )}
         </div>
 
         <Button type="submit" className="w-full">
           {isPending ? (
             <Loader2 className="size-4 animate-spin" />
           ) : (
-            'Sign in with email'
+            'Create account'
           )}
         </Button>
 
         <Button
-          asChild
           type="submit"
           className="w-full"
           size="sm"
           variant="link"
-          disabled={isPending}
+          asChild
         >
-          <Link href="/auth/sign-up">Don't have an account? Sign up</Link>
+          <Link href="/auth/sign-in">Already have an account? Sign in</Link>
         </Button>
       </form>
 
