@@ -10,20 +10,23 @@ import { ProfileButton } from './profile-button'
 import { OrganizationSwitcher } from './organization-switcher'
 import { Separator } from './ui/separator'
 import { ThemeSwitcher } from './theme-switcher'
+import Link from 'next/link'
 
 export async function Header() {
   const permissions = await ability()
 
   return (
-    <div className="mx-auto flex max-w-[1200px] items-center justify-between border-b">
+    <div className="mx-auto flex max-w-[1200px] items-center justify-between border-b pb-2">
       <div className="flex items-center gap-3">
-        <Image
-          src={logoIcon}
-          alt="Logo"
-          width={40}
-          height={40}
-          className="size-6 dark:invert"
-        />
+        <Link href="/">
+          <Image
+            src={logoIcon}
+            alt="Logo"
+            width={40}
+            height={40}
+            className="size-6 dark:invert"
+          />
+        </Link>
 
         <Slash className="text-border size-3 -rotate-[24deg]" />
 
