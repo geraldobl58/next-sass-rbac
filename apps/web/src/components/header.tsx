@@ -2,6 +2,8 @@ import Image from 'next/image'
 
 import logoIcon from '@/assets/logo.svg'
 import { ProfileButton } from './profile-button'
+import { Slash } from 'lucide-react'
+import { OrganizationSwitcher } from './organization-switcher'
 
 export function Header() {
   return (
@@ -14,8 +16,12 @@ export function Header() {
           height={40}
           className="size-6 dark:invert"
         />
+
+        <Slash className="text-border size-3 -rotate-[24deg]" />
+
+        <OrganizationSwitcher />
       </div>
-      <div>
+      <div className="flex items-center gap-4">
         <ProfileButton />
       </div>
     </div>
