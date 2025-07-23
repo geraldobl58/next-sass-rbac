@@ -8,6 +8,8 @@ import logoIcon from '@/assets/logo.svg'
 
 import { ProfileButton } from './profile-button'
 import { OrganizationSwitcher } from './organization-switcher'
+import { Separator } from './ui/separator'
+import { ThemeSwitcher } from './theme-switcher'
 
 export async function Header() {
   const permissions = await ability()
@@ -34,6 +36,8 @@ export async function Header() {
         )}
       </div>
       <div className="flex items-center gap-4">
+        <ThemeSwitcher />
+        <Separator orientation="vertical" className="h-5" />
         <ProfileButton />
       </div>
     </div>
