@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Image from 'next/image'
 
 import { Slash } from 'lucide-react'
@@ -10,7 +11,7 @@ import { ProfileButton } from './profile-button'
 import { OrganizationSwitcher } from './organization-switcher'
 import { Separator } from './ui/separator'
 import { ThemeSwitcher } from './theme-switcher'
-import Link from 'next/link'
+import { ProjectSwitcher } from './project-switcher'
 
 export async function Header() {
   const permissions = await ability()
@@ -34,7 +35,9 @@ export async function Header() {
 
         {permissions?.can('get', 'Project') && (
           <>
-            <p>Projects</p>
+            <Slash className="text-border size-3 -rotate-[24deg]" />
+
+            <ProjectSwitcher />
           </>
         )}
       </div>

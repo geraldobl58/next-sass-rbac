@@ -9,7 +9,7 @@ export default async function AppLayout({
   children: React.ReactNode
   sheet: React.ReactNode
 }>) {
-  if (!isAuthenticated()) {
+  if (!(await isAuthenticated())) {
     // Redirect to sign-in page if the user is not authenticated
     // This is a server-side check, so it will not render the children if the user is not authenticated
     // This is useful for protecting routes that require authentication
