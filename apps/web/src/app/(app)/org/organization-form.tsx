@@ -9,12 +9,25 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Checkbox } from '@/components/ui/checkbox'
 
 import { useFormState } from '@/hooks/use-form-state'
-import { createOrganizationAction } from '../create-organization/actions'
+import { createOrganizationAction, updateOrganizationAction } from './actions'
 
-export function OrganizationForm() {
-  const [{ success, message, errors }, handleSubmit, isPending] = useFormState(
-    createOrganizationAction
-  )
+import { OrganizationSchema } from '@/schemas/organization'
+
+interface OrganizationFormProps {
+  isUpdatting?: boolean
+  initialData?: OrganizationSchema
+}
+
+export function OrganizationForm({
+  isUpdatting = false,
+  initialData,
+}: OrganizationFormProps) {
+  const formAction = isUpdatting
+    ? updateOrganizationAction
+    : createOrganizationAction
+
+  const [{ success, message, errors }, handleSubmit, isPending] =
+    useFormState(formAction)
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -40,7 +53,12 @@ export function OrganizationForm() {
 
       <div className="space-y-1">
         <Label htmlFor="organization">Organization Name</Label>
-        <Input name="name" type="text" id="name" />
+        <Input
+          name="name"
+          type="text"
+          id="name"
+          defaultValue={initialData?.name}
+        />
 
         {errors?.name && (
           <p className="text-xs font-medium text-red-500 dark:text-red-400">
@@ -57,6 +75,7 @@ export function OrganizationForm() {
           id="domain"
           inputMode="url"
           placeholder="example.com"
+          defaultValue={initialData?.domain ?? undefined}
         />
 
         {errors?.domain && (
@@ -72,6 +91,7 @@ export function OrganizationForm() {
             id="shouldAttachUserByDomain"
             name="shouldAttachUserByDomain"
             className="translate-y-0.5"
+            defaultChecked={initialData?.shouldAttachUserByDomain}
           />
           <label htmlFor="shouldAttachUserByDomain" className="space-y-1">
             <span className="text-sm leading-none font-medium">

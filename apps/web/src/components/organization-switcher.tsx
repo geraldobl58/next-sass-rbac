@@ -12,12 +12,12 @@ import {
 } from './ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 
-import { getOrganization } from '@/http/get-organization'
 import { getCurrentOrg } from '@/auth/auth'
+import { getOrganizations } from '@/http/get-organizations'
 
 export async function OrganizationSwitcher() {
   const currentOrg = await getCurrentOrg()
-  const { organizations } = await getOrganization()
+  const { organizations } = await getOrganizations()
 
   const currentOrganization = organizations.find(
     (org) => org.slug === currentOrg
