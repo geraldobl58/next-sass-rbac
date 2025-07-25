@@ -13,6 +13,7 @@ import { getOrganization } from '@/http/get-organization'
 import { Button } from '@/components/ui/button'
 import { organizationSchema } from '@sass/auth'
 import { removeMemberAction } from './actions'
+import { UpdateMemberRoleSelect } from './update-member-role-select'
 
 export async function MembersList() {
   const currentOrg = await getCurrentOrg()
@@ -78,6 +79,16 @@ export async function MembersList() {
                           Transfer Ownership
                         </Button>
                       )}
+
+                      <UpdateMemberRoleSelect
+                        memberId={member.id}
+                        value={member.role}
+                        disabled={
+                          member.userId === membership.userId ||
+                          member.userId === organization.ownerId ||
+                          permissions?.cannot('update', 'User')
+                        }
+                      />
 
                       {permissions?.can('delete', 'User') && (
                         <form action={removeMemberAction.bind(null, member.id)}>
