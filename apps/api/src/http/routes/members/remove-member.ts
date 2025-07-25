@@ -32,9 +32,6 @@ export async function removeMembers(app: FastifyInstance) {
             slug: z.string().min(1, 'Organization slug is required'),
             memberId: z.string().uuid('Member ID must be a valid UUID'),
           }),
-          body: z.object({
-            role: rolesSchema,
-          }),
           response: {
             204: z.null(),
           },
@@ -53,8 +50,6 @@ export async function removeMembers(app: FastifyInstance) {
             'You do not have permission to remove members.'
           )
         }
-
-        const { role } = request.body
 
         await prisma.member.delete({
           where: {
