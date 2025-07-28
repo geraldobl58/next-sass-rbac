@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 
 import { AlertTriangle, GithubIcon, Loader2 } from 'lucide-react'
 
@@ -20,6 +21,8 @@ export function SignInForm() {
     signInWithEmailAndPassword
   )
 
+  const searchParams = useSearchParams()
+
   return (
     <div className="space-y-4">
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -35,7 +38,12 @@ export function SignInForm() {
 
         <div className="space-y-2">
           <Label htmlFor="email">E-mail</Label>
-          <Input name="email" type="email" id="email" />
+          <Input
+            name="email"
+            type="email"
+            id="email"
+            defaultValue={searchParams.get('emaiil') ?? ''}
+          />
 
           {errors?.email && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">

@@ -8,6 +8,7 @@ import { z } from 'zod'
 
 import { signInWithPassword } from '@/http/sign-in-with-password'
 import { redirect } from 'next/navigation'
+import { acceptedInvite } from '@/http/accepted-invite'
 
 const signInSchema = z.object({
   email: z
@@ -50,13 +51,22 @@ export async function signInWithEmailAndPassword(data: FormData) {
       path: '/',
       maxAge: 60 * 60 * 24 * 2, // 2 days
     })
+
+    const invited = cookieStore.get('inviteId')?.value
+
+    if (invited) {
+      try {
+        await acceptedInvite(invited)
+        cookieStore.delete('inviteId')
+      } catch {}
+    }
   } catch (error) {
     if (error instanceof HTTPError) {
       const { message } = await error.response.json()
 
       return {
         success: false,
-        message: 'Unaxpected error occurred. Please, try again later.',
+        message,
         errors: null,
       }
     }
