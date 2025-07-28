@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { XOctagon } from 'lucide-react'
 import { RevokeInviteButton } from './revoke-invite-button'
+import { CreateInvite } from './create-invite-form'
 
 export async function Invites() {
   const currentOrg = await getCurrentOrg()
@@ -20,7 +21,9 @@ export async function Invites() {
           <CardHeader>
             <CardTitle>Invite member</CardTitle>
           </CardHeader>
-          <CardContent>Content</CardContent>
+          <CardContent>
+            <CreateInvite />
+          </CardContent>
         </Card>
       )}
 
